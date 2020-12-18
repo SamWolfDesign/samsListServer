@@ -1,13 +1,13 @@
-const User = require('../models/user');
-
 const router = require('express').Router();
-// const User = require('../db').import('../models/user');
+// const User = require('../models/user');
+const User = require('../models/user');
+const db = require('../db')
 const jwt = require("jsonwebtoken");
 
 router.post('/create', function (req, res) {
 
     User.create({
-        user_id: req.body.user.user_id,
+        // user_id: res.body.user.user_id,
         firstName: req.body.user.firstName,
         lastName: req.body.user.lastName,
         email: req.body.user.email,
@@ -16,7 +16,7 @@ router.post('/create', function (req, res) {
     })
     .then(
         function createSuccess(user) {
-            let token = jwt.sign({id: user.id}, "i_am_secret", {expiresIn: 60 * 60 * 24});
+            let token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 24});
             
             res.json({
                 user: user,
@@ -37,8 +37,12 @@ router.post('/login', function(req, res) {
     })
     .then(function loginSuccess(user) {
         if (user) {
+            let token = jwt.sign({id: user.id}, "i_am_secret", {expiresIn: 60 * 60 * 24})
+
             res.status(200).json({
-                user: user
+                user: user,
+                message: "Ayeee bub! Welcome back!!",
+                sessionToken: token
             })
         } else {
             res.status(500).json({ error: 'User does not exist.'})
