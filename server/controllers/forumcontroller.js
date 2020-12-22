@@ -45,7 +45,7 @@ router.get('/:title', function (req, res) {
     Forum.findAll({
         where: {title: title}
     })
-    .then(forum => res.status(200))
+    .then(forum => res.status(200)(forum))
     .catch(err => res.status(500).json({ error: err }))
 })
 
