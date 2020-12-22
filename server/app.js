@@ -13,6 +13,8 @@ let user = require('./controllers/usercontroller');
 
 app.use('/user', user);
 
+
+app.use(require('./middleware/validate-session'));
 app.use('/forum', forum);
 
 db.authenticate()
