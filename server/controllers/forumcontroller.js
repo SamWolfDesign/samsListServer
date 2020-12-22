@@ -59,7 +59,7 @@ router.put("/update/:mainId", validateSession, function (req, res) {
     const query = { where: { id: req.params.mainId, user: req.user.id }}
 
     Forum.update(updateForumEntry, query)
-    .then((forum) => res.status(200).json(journals))
+    .then((forum) => res.status(200).json(forum))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
