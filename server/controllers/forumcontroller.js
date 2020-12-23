@@ -68,7 +68,7 @@ router.delete("/delete/:id", validateSession, function (req, res) {
     const query = { where: { id: req.params.id, owner: req.user.id } };
 
     Forum.destroy(query)
-    .then(() => res.status(200).json({ message: "BABY BYE BYE BYE (BYE BYE BYE)"}))
+    .then(() => res.status(200).json({ message: "BABY BYE BYE BYEEE (BYE BYE BYE)"}))
     .catch((err) => res.status(500).json({ error: "Sorry buddy, I'm not gonna do that."}));
 });
 

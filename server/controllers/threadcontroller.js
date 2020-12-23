@@ -59,8 +59,17 @@ router.put("/update/:mainId", validateSession, function (req, res) {
     const query = { where: { id: req.params.mainId, user: req.user.id}}
 
     Thread.update(updateThreadEntry, query)
-    .then((thread) => res.status(200).json(forum))
+    .then((thread) => res.status(200).json(thread))
     .catch((err) => res.status(500).json({ error: err }))
+});
+
+//delete forum
+router.delete("/delete/:id", validateSession, function (req, res) {
+    const query = { where: { id: req.params.id, owner: req.user.id } };
+
+    Thread.destroy(query)
+    .then(() => res.status(200).json({ message: "BOOM HEADSHOT"}))
+    .catch((err) => res.status(500).json({ error: "Yeah, man, no."}))
 })
 
 module.exports = router
