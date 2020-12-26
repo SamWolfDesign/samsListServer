@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
+const Forum = require('./forum');
 
 const User = db.define("user", {
     // user_id: {
@@ -30,4 +31,7 @@ const User = db.define("user", {
     },
 });
 
+
 module.exports = User;
+
+// User.hasNamy()
