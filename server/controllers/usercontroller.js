@@ -62,18 +62,24 @@ router.post('/login', function(req, res) {
 });
 
 //get user
-router.get('/getuserinfo', (req, res) => {
-    User.findOne({
-        where: {
-            userId: req.user.id
-        }
-    })
-    .then(function createSuccess(data) {
-        res.status(200).json({
-            message: 'I gotchu, fam',
-            data: data
-        })
-    }).catch(err => res.status(500).json('Woah woah woah wait, who are we talking about?', err))
+// router.get('/getuserinfo', (req, res) => {
+//     User.findOne({
+//         where: {
+//             userid: req.user.id
+//         }
+//     })
+//     .then(function createSuccess(data) {
+//         res.status(200).json({
+//             message: 'I gotchu, fam',
+//             data: data
+//         })
+//     }).catch(err => res.status(500).json('Woah woah woah wait, who are we talking about?', err))
+// })
+
+router.post('/getuser/:id', (req, res) => {
+    User.findOne({ where: { id: req.params.id } }) // later will need ", include: ['user', 'forum', 'thread']" once assoc is good
+        .then(info => res.status(200).json({info, message: "It worked!!"}))
+        .catch(err => res.status(500).json(err))
 })
 
 module.exports = router;

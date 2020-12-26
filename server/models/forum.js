@@ -21,9 +21,12 @@ const Thread = require('./thread')
         posterId_fk: {
             type: DataTypes.INTEGER,
             allowNull: false
-        }
+        },
+        // adminId_fk: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false
+        // }
     })
 
-Thread.belongsTo(Forum, { foreignKey: 'customerId_fk', targetKey: 'id'});
-Forum.hasMany(Thread, { foreignKey: 'customerId_fk', sourceKey: 'id' });
+
 module.exports = Forum;

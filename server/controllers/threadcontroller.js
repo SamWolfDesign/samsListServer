@@ -18,7 +18,7 @@ router.post('/create', validateSession, (req, res) => {
         date: req.body.thread.date
     }
     Thread.create(threadEntry)
-        .then(thread => res.status(200).json(forum))
+        .then(thread => res.status(200).json(thread))
         .catch(err => res.status(500).json({ error: err }))
 })
 

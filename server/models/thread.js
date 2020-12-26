@@ -18,10 +18,14 @@ const Thread = db.define('thread', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    posterId_fk: {
+    threadId_fk: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
+    // adminId_fk: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    // }
 })
 
 module.exports = Thread;

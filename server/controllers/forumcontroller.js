@@ -15,7 +15,8 @@ router.post('/create', validateSession, (req, res) => {
         title: req.body.forum.title,
         main: req.body.forum.main,
         user: req.user.id,
-        date: req.body.forum.date
+        date: req.body.forum.date,
+        posterId_fk: req.user.id
     }
     Forum.create(forumEntry)
         .then(forum => res.status(200).json(forum))
