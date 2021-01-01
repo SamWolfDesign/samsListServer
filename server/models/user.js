@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
-const Forum = require('./forum');
+// const Forum = require('./forum');
 
 const User = db.define("user", {
     // user_id: {
@@ -25,10 +25,12 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false,
     },
-    adminCheck: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    },
+    role: {
+        type: DataTypes.ENUM(
+            "admin", "user"
+        ),
+        allowNull: false,
+        }
 });
 
 

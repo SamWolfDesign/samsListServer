@@ -3,10 +3,12 @@ let router = express.Router();
 let validateSession = require('../middleware/validate-session');
 const db = require('../db')
 let Forum = require('../models/forum');
+let ac = require('../duties');
+
 
 router.get('/practice', validateSession, function(req, res)
 {
-    res.send('Hey!! This is a fuckin practice route!')
+    res.send('Hey!! This is a practice route!')
 });
 
 //CREATE BELOW
@@ -52,26 +54,54 @@ router.get('/:title', function (req, res) {
 
 //edit forum
 router.put("/update/:mainId", validateSession, function (req, res) {
+    const permission = ac.can(req.user.role).updateAny('forum') && ac.can(req.user.role).updateOwn('forum');
+
     const updateForumEntry = {
         title: req.body.forum.title,
         main: req.body.forum.main,
     };
 
-    const query = { where: { id: req.params.mainId, user: req.user.id }}
+    if(permission.granted) {
+        const query = { where: { id: req.params.mainId}} //, user: req.user.id 
+        Forum.update(updateForumEntry, query)
+        .then((forum) => {
+            if(forum){
+                res.status(200).json({forum, message: "Hey, I worked!"})
+            } else {
+                res.status(500).json({ error: "I am different!"})
+            }
+        }
+        )
+        .catch((err) => res.status(500).json({ error: err }));
+    } else {
+        res.status(500).json({ error: "Ooooh yeah, no. That's above your pay-grade"})
+    }
+    }
 
-    Forum.update(updateForumEntry, query)
-    .then((forum) => res.status(200).json(forum))
-    .catch((err) => res.status(500).json({ error: err }));
-});
+);
 
 //delete forum
 router.delete("/delete/:id", validateSession, function (req, res) {
-    const query = { where: { id: req.params.id, owner: req.user.id } };
+    const permission = ac.can(req.user.role).deleteAny('forum') && ac.can(req.user.role).deleteOwn('forum');
 
-    Forum.destroy(query)
-    .then(() => res.status(200).json({ message: "BABY BYE BYE BYEEE (BYE BYE BYE)"}))
-    .catch((err) => res.status(500).json({ error: "Sorry buddy, I'm not gonna do that."}));
-});
+    if(permission.granted){
+        const query = { where: { id: req.params.id, owner: req.user.id } };
+
+        Forum.destroy(query)
+        .then((forum) => {
+            if(forum){
+                res.status(200).json({ message: "BABY BYE BYE BYEEE (BYE BYE BYE)"})
+            } else {
+                res.status(500).json({ error: "Sorry buddy, I'm not gonna do that."})
+            }
+        }
+        )
+        .catch((err) => res.status(500).json({ error: err }))
+    } else {
+        res.status(500).json({ error: "Ooooh yeah, no. That's above your pay-grade"})
+    }
+}
+);
 
 module.exports = router
 

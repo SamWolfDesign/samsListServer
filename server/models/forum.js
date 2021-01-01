@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize"); //"types removed from here to fix 'sequelize not found' error"
 const db = require('../db')
-const Thread = require('./thread')
+
 
     const Forum = db.define('forum', {
         title: {

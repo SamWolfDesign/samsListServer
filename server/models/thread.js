@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require('../db');
-const Forum = require('./forum')
+
 
 const Thread = db.define('thread', {
     title: {
