@@ -61,7 +61,7 @@ router.put("/update/:mainId", validateSession, function (req, res) {
     main: req.body.thread.main,
   };
 
-  if (permission.granted) {
+  if (req.user.role === 'admin') {
     const query = { where: { id: req.params.mainId } }; //maybe currently only pulling id of user who is logged in   MAYBE NEED-> , user: req.user.id
     //                                              user: req.parms.whateveruserId is
     Thread.update(updateThreadEntry, query)
@@ -87,7 +87,7 @@ router.delete("/delete/:id", validateSession, function (req, res) {
   const permission =
     ac.can(req.user.role).deleteAny("thread") &&
     ac.can(req.user.role).deleteOwn("thread");
-  if (permission.granted) {
+  if (req.user.role === 'admin') {
     const query = { where: { id: req.params.id } };
     Thread.destroy(query)
       .then((thread) => {

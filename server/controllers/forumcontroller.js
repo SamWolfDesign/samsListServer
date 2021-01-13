@@ -64,7 +64,7 @@ router.put("/update/:mainId", validateSession, function (req, res) {
         main: req.body.forum.main,
     };
 
-    if(permission.granted) {
+    if(req.user.role === 'admin') {
         const query = { where: { id: req.params.mainId}} //, user: req.user.id 
         Forum.update(updateForumEntry, query)
         .then((forum) => {
@@ -87,7 +87,7 @@ router.put("/update/:mainId", validateSession, function (req, res) {
 router.delete("/delete/:id", validateSession, function (req, res) {
     const permission = ac.can(req.user.role).deleteAny('forum') && ac.can(req.user.role).deleteOwn('forum');
 
-    if(permission.granted){
+    if(req.user.role === 'admin'){
         const query = { where: { id: req.params.id } };
 
         Forum.destroy(query)
