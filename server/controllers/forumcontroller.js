@@ -41,6 +41,9 @@ router.get("/myposts", validateSession, (req, res) => {
     .catch(err => res.status(500).json({ error: "nah >:)" }))
 });
 
+//get by ID
+
+
 //by forum title
 router.get('/:title', function (req, res) {
     let title = req.params.title;
@@ -85,7 +88,7 @@ router.delete("/delete/:id", validateSession, function (req, res) {
     const permission = ac.can(req.user.role).deleteAny('forum') && ac.can(req.user.role).deleteOwn('forum');
 
     if(permission.granted){
-        const query = { where: { id: req.params.id, owner: req.user.id } };
+        const query = { where: { id: req.params.id } };
 
         Forum.destroy(query)
         .then((forum) => {

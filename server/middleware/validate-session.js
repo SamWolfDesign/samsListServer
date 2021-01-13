@@ -18,7 +18,7 @@ const validateSession = (req, res, next) => {
                 })
                 .then(user => {
                     console.log('user --> ', user);
-                    if(!user) throw err;
+                    if(!user) throw "err";
                     console.log('req --> ', req);
                     req.user = user;
                     return next();
@@ -26,7 +26,9 @@ const validateSession = (req, res, next) => {
                 .catch(err => next(err));
             } else {
                 req.errors = err;
-                return res.status(500).send('Not Authorized >:)');
+                return res.status(500).json({
+                    err: err
+                });
             }
         });
     }

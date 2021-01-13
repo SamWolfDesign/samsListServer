@@ -1,6 +1,7 @@
 require('dotenv').config();
 let express = require('express');
 let app = express();
+app.use(require ("./middleware/headers"))
 
 let db = require('./db');
 app.use(express.json())
@@ -16,7 +17,7 @@ let user = require('./controllers/usercontroller');
 app.use('/user', user);
 
 //he protec
-app.use(require('./middleware/validate-session'));
+// app.use(require('./middleware/validate-session'));
 app.use('/forum', forum);
 app.use('/thread', thread);
 
