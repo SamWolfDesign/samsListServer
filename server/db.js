@@ -1,6 +1,14 @@
 const { Sequelize } = require('sequelize');
-const db = new Sequelize(process.env.DB_CONNECTION_STRING, {
-    dialect: "postgres"
-});
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+//     dialect: "postgres"
+// });
 
-module.exports = db;
+const sequelize = new Sequelize(
+    process.env.DATABASE_URL ||
+    `postfresql://postgres:${encodeURIComponent(process.env.PASS)}@localhost/sam-list2`,
+    {
+        dialect: 'postgres',
+    }
+)
+
+module.exports = sequelize;
