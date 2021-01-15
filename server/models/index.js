@@ -2,10 +2,13 @@ const User = require('./user');
 const Forum = require('./forum');
 const Thread = require('./thread');
 
-Forum.belongsTo(User, {foreignKey: 'posterId_fk', targetKey: 'id'});
-User.hasMany(Forum, {foreignKey: 'posterId_fk', sourceKey: 'id'});
+Forum.belongsTo(User);
+Thread.belongsTo(User);
+Thread.belongsTo(Forum)
 
-Thread.belongsTo(User, {foreignKey: 'threadId_fk', targetKey: 'id'});
-User.hasMany(Thread, {foreignKey: 'threadId_fk', sourceKey: 'id'});
+
+User.hasMany(Forum);
+User.hasMany(Thread);
+Forum.hasMany(Thread)
 
 module.exports = { User, Forum, Thread };

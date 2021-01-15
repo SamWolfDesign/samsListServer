@@ -11,9 +11,9 @@ const db = require('../db')
             type: DataTypes.STRING,
             allowNull: false
         },
-        user: {
-            type: DataTypes.INTEGER
-        },
+        // user: {
+        //     type: DataTypes.INTEGER
+        // },
         date: {
             type: DataTypes.STRING,
             allowNull: false

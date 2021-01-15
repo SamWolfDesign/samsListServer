@@ -2,7 +2,7 @@ let express = require("express");
 let router = express.Router();
 let validateSession = require("../middleware/validate-session");
 const db = require("../db");
-let Thread = require("../models/thread");
+let {Thread} = require("../models");
 const ac = require("../duties");
 
 router.get("/practice", validateSession, function (req, res) {
@@ -14,9 +14,11 @@ router.post("/create", validateSession, (req, res) => {
   const threadEntry = {
     title: req.body.thread.title,
     main: req.body.thread.main,
-    user: req.user.id,
+    // user: req.user.id,
     date: req.body.thread.date,
     threadId_fk: req.user.id,
+    forumId: req.body.thread.forumId,
+    userId: req.user.userId
   };
   Thread.create(threadEntry)
     .then((thread) => res.status(200).json(thread))
@@ -24,8 +26,11 @@ router.post("/create", validateSession, (req, res) => {
 });
 
 //get all
-router.get("/", (req, res) => {
-  Thread.findAll()
+router.get("/:forumId", (req, res) => {
+  Thread.findAll({
+    where: { forumId: req.params.forumId },
+    include: ["user"]
+  })
     .then((thread) => res.status(200).json(thread))
     .catch((err) => res.status(500).json({ error: err }));
 });
